@@ -1,6 +1,6 @@
 ---
 title: "R Workshop"
-author: "Natalia Vélez"
+author: "Natalia Vélez (edited lightly by Benny)"
 date: "7/9/2019"
 output:
   pdf_document: default
@@ -13,10 +13,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this tutorial, we'll be analyzing data from a paper we've read recently, and we'll attempt to reproduce the main result. The *goal* of this tutorial is for you to use a real-world dataset to run through a typical workflow: we'll load data, clean the data, visualize the data, and run statistical tests on the results. 
 
-First, we'll load the libraries we'll use today:
+First, we'll load the libraries we'll use today and tell R where to look when we want to load in the data:
 
 ```{r}
 install.packages('broom.mixed')
+install.packages('fs')
 
 library(tidyverse)
 library(broom.mixed)
@@ -24,6 +25,15 @@ library(ggthemes)
 library(lme4)
 library(lmerTest)
 library(datasets)
+library(fs)
+
+project_root <- here::here() 
+#This will let us specify all file paths relative
+#to the top of this directory, so we don't have to
+#mess around with working directory settings.
+
+data_wide_file <- path(project_root, "2019", "liu_deidentified_data.csv") #path to data
+
 ```
 
 ## If you learn nothing else today, learn this: Search!
@@ -66,16 +76,19 @@ length(x)
 **Exercise 2:** In the chunk below, I made a new dataframe, `avg_iris` that summarizes the average petal length for each species of iris. (Hint: you can enter `avg_iris` on the console to see what it looks like!) I want to use this dataframe to plot the average petal length for each species of iris—but it didn't work! Google the error and fix this code.
 
 ```{r eval=FALSE}
-avg_iris = iris %>%
+avg_iris <- 
+  iris %>%
   group_by(Species) %>%
   summarise(avg_petal_length = mean(Petal.Length))
 
+#Why does this ggplot command give an error?
 ggplot(avg_iris, aes(x = Species, y = avg_petal_length)) +
   geom_bar()
 ```
 
 **Exercise 3:** Here's a more general problem you will run into, simply, how to do something you've never done before! Below, we've plotted a scatter plot showing the relationship between petal length and petal width. Search Google to figure out how to add a regression line to this plot.
 ```{r}
+#Add a regression line to this plot
 ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
   geom_point()
 ```
@@ -84,7 +97,7 @@ ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) +
 
 First, let's load the data:
 ```{r}
-data_wide = read.csv('liu_deidentified_data.csv')
+data_wide = read_csv(data_wide_file)
 head(data_wide)
 ```
 
