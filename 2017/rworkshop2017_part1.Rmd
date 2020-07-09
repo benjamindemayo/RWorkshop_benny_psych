@@ -75,7 +75,7 @@ In both cases, `x` will represent `4` for all lines of code below these here, un
 ```{r variable_assignment_2}
 x
 x + 2
-x = 8
+x <- 8
 x
 ```
 
@@ -96,13 +96,13 @@ Here's a simple example that novice coders often find confusing. Walk yourself t
 
 ```{r assignment_example}
 a = 10
-b = 20
-a = b
+b <-  20
+a <-  b
 print(a)
 
 ## Note that we can now use the variable in calculations (this will become more important later on) ##
-a+b
-b-a^2
+a + b
+b - a^2
 ```
 
 Using functions
@@ -130,10 +130,9 @@ mean(rt) # Average
 sd(rt) # Standard deviation
 ```
 
-You can also *compose* functions, which allows for more expressive code:
-
+You can also *compose* functions, which allows for more expressive code: 
 ```{r composed_functions}
-a = c(-2, 4, 5.5)
+a <- c(-2, 4, 5.5)
 sum(a)
 sum(abs(a))
 ```
@@ -144,11 +143,11 @@ Most importantly, you can *write* your own functions. For example, there's no fu
 ## Format is:
 # Name_of_function = function(input_argument) {operation on input argument}
 
-sem = function(foo) {
+sem <- function(foo) {
   sd(foo,na.rm = T) / sqrt(length(foo))
 }
 
-d1 = rnorm(30,0,3)
+d1 <- rnorm(30,0,3)
 mean(d1)
 sd(d1)
 sem(d1)
@@ -159,7 +158,7 @@ sem(d1)
 Sometimes, functions have *keyword arguments*. When values are not passed for these arguments, they take a default value, which can be found when you look at the help for that function (`?func_name`). For example, most statistical functions in R have built-in missing-value handling. Because missing data is common with real-world data, there is a special object in R to stand for it called `NA`. Functions like `mean` have an optional argument `na.rm` which tells the function whether it should just ignore these values. It's `FALSE` by default, so a vector with missing values will have a mean of NA (to indicate that the normal mathematical procedure failed on these particular data):
 
 ```{r na.rm_false}
-a = c(2, 6, NA, 8)
+a <- c(2, 6, NA, 8)
 mean(a)
 ```
 
@@ -194,12 +193,12 @@ You put vectors together to make a data frame:
 
 ```{r adding_names}
 ### An example of when it may be useful- number of food items on plate ###
-breakfast = c(1, 0, 2, 4, 2, 1, 1, 3, 0)
-names(breakfast) = c("elmo", "oscar", "big bird", "cookie monster", "bert", "ernie", "the count", "kermit", "grover")
+breakfast <- c(1, 0, 2, 4, 2, 1, 1, 3, 0)
+names(breakfast) <- c("elmo", "oscar", "big bird", "cookie monster", "bert", "ernie", "the count", "kermit", "grover")
 
-lunch = c(3, 4, 0, 6, 1, 1, 2, 1, 2)
+lunch <- c(3, 4, 0, 6, 1, 1, 2, 1, 2)
 
-eating=cbind(breakfast, lunch) #vectors can be bunched together using the function cbind(). Note that the names we assigned to our original vector now represent each row. 
+eating <- cbind(breakfast, lunch) #vectors can be bunched together using the function cbind(). Note that the names we assigned to our original vector now represent each row. 
 
 eating
 ```
@@ -207,7 +206,7 @@ eating
 To pull specific elements out of a vector, you *index* (or *subscript*) by writing the name of the vector and then adding square brackets (`[ ]`)  with the position of the item you want (starting at 1). You can also use `:` to index multiple elements:
 
 ```{r index_vector}
-v = 2:7
+v <- 2:7
 v[3]
 v[3:6]
 v[c(2,4,6)]
@@ -225,20 +224,20 @@ eating["cookie monster", "lunch"] #we can index using the variable's name
 Indexing into a vector allows you not just to use the value in that position, but to change it too:
 
 ```{r index_update}
-v[1:2] = c(0, 0)
+v[1:2] <- c(0, 0)
 v
-v["buz"] = 6
+v["buz"] <- 6
 v
 
 ### in our example- oscar actually had fruit for breakfast ###
-breakfast["oscar"]= 1
+breakfast["oscar"] <- 1
 breakfast #notice that the change did not automatically carry over to "eating" dataset
 
 ## kermit had sandwich and an egg for lunch ##
-eating["kermit","breakfast"]= 2
+eating["kermit","breakfast"] <- 2
 eating
 ## ernie had the same breakfast as bert ##
-eating["ernie", "breakfast"] = eating["bert", "breakfast"]
+eating["ernie", "breakfast"]  <- eating["bert", "breakfast"]
 eating
 ```
 
@@ -251,7 +250,7 @@ An important fact about vectors is that all of the elements in the vector have t
 These are listed in increasing order of generality, since logical data can be considered numeric (with `FALSE == 0` and `TRUE == 1`) and numbers can be encoded as strings. When a vector is created with multiple datatypes, the most general one is chosen. Be aware that this can cause unexpected errors:
 
 ```{r vector_dtypes}
-v = c(TRUE, 1, "1")
+v <- c(TRUE, 1, "1")
 v
 # v[2] + 2 #error!
 ```
@@ -259,7 +258,7 @@ v
 There are some functions to convert vectors between types:
 
 ```{r type_convert}
-v = c(1, 0, 1)
+v  <- c(1, 0, 1)
 as.logical(v)
 as.character(v)
 as.numeric(c("1", 2.5)) 
@@ -270,11 +269,11 @@ While we're talking about datatypes, we'll point out that the terms "character" 
 One nice thing about vectors is that you can treat vectors as whole objects in mathematical expressions, and the expression will be applied to the entire vector (this is called "vectorized computation"). This results in code that is both easier to read and faster to execute than performing the operation on each element of the vector:
 
 ```{r vectorized_math}
-v = c(4, -2.5, 6, -7.3)
+v  <- c(4, -2.5, 6, -7.3)
 v * .5
 v ** 2
 abs(v)
-w = 1:4
+w  <- 1:4
 log(w)
 v + w
 ```
@@ -285,7 +284,7 @@ v + w
 Possibly the most useful data structure, and the one you'll encounter most often when doing statistics with R, is the `data.frame`. Technically, a dataframe is a list of vectors, although you don't need to interact directly with lists to use them. You can make a dataframe with the eponymous function, `data.frame` which creates a two-dimensional object (like a matrix) with each component vector placed in the columns. In this sense, it's similar to a basic spreadsheet in Excel or SPSS, which you may have experience with.
 
 ```{r dataframe_intro}
-df = data.frame(foo=1:6, bar=rep(c("a", "b", "c"), 2))
+df  <- data.frame(foo = 1:6, bar = rep(c("a", "b", "c"), 2))
 df
 ```
 
@@ -297,7 +296,7 @@ df$foo
 also add more fields to it:
 
 ```{r expand_dataframe}
-df$exp_foo = exp(df$foo)
+df$exp_foo <- exp(df$foo)
 df
 ```
 
@@ -321,7 +320,7 @@ To illustrate the basic process of importing and exploring a new data set, we tu
 Let's start by loading in the data:
 
 ```{r load_earlydaths}
-df_death = read.csv("http://stanford.edu/class/psych252/data/earlydeaths.csv")
+df_death <- read.csv("http://stanford.edu/class/psych252/data/earlydeaths.csv")
 ```
 
 If you look at the Environment table, you can see that this **dataframe** is composed of 2 **variables** that each has 350 observations. In this case, each observation represents a single death, and the 2 variables tell us information about that death (the time and cause). 
@@ -350,8 +349,11 @@ The variable `time` codes the year as an integer (1, 2, 3). We instead want to t
 
 ```{r Mutate}
 # Another way of doing this without dplyr
-death_year = df_death %>%
-  mutate(year = factor(time, levels = 1:3, labels = c('1990-91', '1992-93', '1994-95')))
+death_year <- 
+  df_death %>%
+  mutate(year = factor(
+    time, levels = 1:3, labels = c('1990-91', '1992-93', '1994-95'))
+  )
 
 head(death_year)
 summary(death_year)
@@ -367,7 +369,8 @@ Next, we'll use the `summarise()` and `group_by()` functions to summarize the `d
 `summarise()` returns summary statistics of all the data points in a group. In this case, we just want to know the number of deaths of each cause by year, so we'll use the function `n()`. `n()` returns the number of rows in each group. Since each row in `death_year` corresponds to a single death, `n()` will return the number of deaths from each cause by year.
 
 ```{r Summarise}
-death_summary = death_year %>%
+death_summary <-  
+  death_year %>%
   group_by(year, cause) %>%
   summarise(n_deaths = n())
 
@@ -400,11 +403,15 @@ Now, let's turn to our `death_summary` dataframe and see what we can do with it.
 ggplot creates a plot "object", which we will store in `death_plot`. Each plot object contains a list of commands that are strung together with `+`. We'll build up our plot by adding commands one at a time, so that we see what each command can do.
 
 ```{r Create plot object}
-death_plot = ggplot(data = death_summary, aes(x = year, y = n_deaths, group = cause, color = cause))
+death_plot <- 
+  ggplot(
+    data = death_summary, 
+    aes(x = year, y = n_deaths, group = cause, color = cause)
+  )
 death_plot
 ```
 
-This line of code is pretty complicated, so let's break it down! 
+This part of the code is pretty complicated, so let's break it down! 
 
 First off, we chose a *dataframe* to plot from. The keyword argument `data = death_summary` tells ggplot to use the `death_summary` dataframe to make a plot. 
 
@@ -415,7 +422,7 @@ We also want to draw two lines in our plot: one for deaths for maltreatment and 
 Now let's add a "layer" of visualization, which ggplot calls a "geom".
 
 ```{r Add geom_point}
-death_plot = death_plot + 
+death_plot <- death_plot + 
   geom_point()
 
 print(death_plot)
@@ -424,7 +431,7 @@ print(death_plot)
 As you can see, `geom_point()` draws points in two colors, one for each cause of death. Let's draw some lines to connect them!
 
 ```{r Add geom_line}
-death_plot = death_plot + 
+death_plot <- death_plot + 
   geom_line()
 
 print(death_plot)
@@ -435,7 +442,8 @@ This is starting to look like a proper plot! `geom_line()` draws lines to connec
 Now let's beautify our plot. Let's start by changing the x-axis (`xlab()`) and y-axis (`ylab()`), and giving the plot a title (`ggtitle()`)
 
 ```{r Add axis labels}
-death_plot = death_plot +
+death_plot <- 
+  death_plot +
   xlab('Year') +
   ylab('Number of deaths') +
   ggtitle('Number of deaths by year')
@@ -446,7 +454,8 @@ print(death_plot)
 Now, let's change the legend text using `scale_color_discrete`.
 
 ```{r Change legend text}
-death_plot = death_plot +
+death_plot <- 
+  death_plot +
   scale_color_discrete('Cause', labels = c('Maltreatment', 'Other'))
 
 print(death_plot)
@@ -455,8 +464,7 @@ print(death_plot)
 We're almost done! Let's change the look of the plot by specifying a new theme. The `ggthemes` package (more information [here](https://github.com/jrnold/ggthemes)) comes with a lot of good-looking themes to help you customize the look of your plots. I personally like `theme_hc()`, since it gives the plot a clean, minimalist look.
 
 ```{r Change plot theme}
-death_plot = death_plot +
-  theme_hc()
+death_plot <- death_plot + theme_hc()
 
 print(death_plot)
 ```
@@ -472,7 +480,10 @@ Now, let's explore! Below, I've placed all of the code that we used to generate 
 * Use a new command, `theme`, to change the font size. **Hint:** we haven't covered this yet---you'll have to Google how to do this! In general, you'll often have to figure out how to do things in R that you haven't done before, especially when you're just getting started. You're welcome to use this workshop as a reference in the future, but our advice is: Google things quickly and often to get yourself unstuck! Googling things is the first step towards becoming independent and self-sufficient in R.
 
 ```{r Play with the plot}
-ggplot(data=death_summary, aes(x = year, y = n_deaths, color = cause, group = cause)) +
+ggplot(
+  data = death_summary, 
+  aes(x = year, y = n_deaths, color = cause, group = cause)
+) +
   geom_point() +
   geom_line() +
   xlab('Year') + 
@@ -518,12 +529,12 @@ t.test(d1)
 When do you use paired t-tests? How are they different from Two sample t-tests?
 ```{r paired t-tests}
 set.seed(1)
-d3 = NULL
-d3$pre = rnorm(20, mean = 10) # draws 20 numbers from a normal distribution with mean = 0, sd = 1;
-d3$post = d3$pre + rnorm(20 ,mean = 0.5, sd = 1) # add a random number drawn from a normal distribution with mean 0.5 and SD = 1 to simulate a positive effect
+d3 <- NULL
+d3$pre <- rnorm(20, mean = 10) # draws 20 numbers from a normal distribution with mean = 0, sd = 1;
+d3$post <- d3$pre + rnorm(20 ,mean = 0.5, sd = 1) # add a random number drawn from a normal distribution with mean 0.5 and SD = 1 to simulate a positive effect
 
 # Make dataframe, and inspect data!
-d3 = as.data.frame(d3) 
+d3 <- as.data.frame(d3) 
 
 # What does this mean?
 t.test(d3$pre,d3$post, paired = TRUE)
@@ -541,10 +552,10 @@ For these cases, you would want to use linear modeling. Before talking about the
 
 ```{r}
 # Generate fake regression data
-fake_regress = NULL;
-fake_regress$x = rnorm(30,68,10)                  
-fake_regress$y = fake_regress$x * 0.2 - 222 + rnorm(30,50,50)
-fake_regress = as.data.frame(fake_regress)
+fake_regress <- NULL;
+fake_regress$x <- rnorm(30,68,10)                  
+fake_regress$y <- fake_regress$x * 0.2 - 222 + rnorm(30,50,50)
+fake_regress <- as.data.frame(fake_regress)
 
 qplot(fake_regress$x,fake_regress$y) + geom_smooth(method='lm')
 ```
@@ -564,7 +575,7 @@ To give you a taste of running linear models, let's run a couple of tests with t
 First plot the data, we'll use `qplot` to understand how `len` (tooth length) depends on `dose` (amount of Vitamin C) and `supp` (delivery method). 
 
 ```{r}
-d4 = ToothGrowth;
+d4 <- ToothGrowth;
 ggplot(d4, aes(x=dose,y=len, color=supp)) +
   geom_point() +
   geom_smooth(se=F, method="lm")
@@ -575,7 +586,7 @@ Describe what you see.
 Let's first test to see if dose and administration method have additive effect on tooth length:  
 
 ```{r}
-res1 = lm(len ~ dose + supp, d4); 
+res1 <- lm(len ~ dose + supp, d4); 
 summary(res1)
 ```
 
@@ -584,7 +595,7 @@ Thought question: Take a moment to interpret the coefficients of the model. What
 
 Now, let's test if there is an interaction between adminstration method and dosage. Before we run this, what is an interaction?  
 ```{r}
-res2 = lm(len ~  dose * supp, d4); 
+res2 <- lm(len ~  dose * supp, d4); 
 summary(res2)
 ```
 
@@ -620,7 +631,7 @@ We'll run 10,000 t-tests with standard, normally-distributed data from a made up
 First do this using a `for` loop.
 
 ```{r}
-p.values = NULL
+p.values <- NULL
 # What does each iteration of the for loop do?
 for (i in 1:10000 ) {
   fake_sample = rnorm(30,10,1)
@@ -628,7 +639,7 @@ for (i in 1:10000 ) {
   p.values[i] = res1$p.value
 }
 
-frac_sig = mean(p.values < 0.05)
+frac_sig <- mean(p.values < 0.05)
 cat(paste("False Positive Rate ="), frac_sig)
 ```
 
