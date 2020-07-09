@@ -9,7 +9,7 @@ Welcome to the R workshop! In this workshop, you'll go through all of the basic 
 To download this dataset, make sure you have [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your computer. Then go to your Terminal and:
 
 * Use `cd` to navigate to the directory where you want to keep the tutorial files (e.g., `cd ~/Documents`)
-* Clone the workshop into that directory by typing: `git clone https://github.com/nataliavelez/RWorkshop.git`
+* Clone the workshop into that directory by typing: `git clone https://github.com/benjamindemayo/RWorkshop_benny_psych.git`
 
 This workshop is currently under construction, so you'll have to update it the morning of the workshop to make sure you have the latest version of the tutorials! To sync your copy of the workshop:
 
